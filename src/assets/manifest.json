@@ -1,7 +1,7 @@
 {
-  "name": "Hello, Blockstack",
+  "name": "Health Chain",
   "start_url": "localhost:8080/patients",
-  "description": "A simple demo of Blockstack Auth",
+  "description": "Painless Patient Information Sharing",
   "icons": [
     {
       "src": "http://localhost:8080/icon-192x192.png",

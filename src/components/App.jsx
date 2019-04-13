@@ -1,5 +1,5 @@
 import React, { Component, Link } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter} from "react-router-dom";
 
 import Signin from "./Signin.jsx";
 import {
@@ -14,9 +14,17 @@ import Profile from "./Profile.jsx";
 import Hospital from "./Hospital";
 import Insurance from "./Insurance";
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    if (isSignInPending()) {
+      handlePendingSignIn().then(userData => {
+        window.location = window.location.origin + "/patients";
+      });
+    }
   }
 
   handleSignIn(e) {
@@ -30,43 +38,40 @@ export default class App extends Component {
 
   handleSignOut(e) {
     e.preventDefault();
-    signUserOut(window.location.origin);
+    signUserOut(window.location.origin + "/patients");
   }
 
   render() {
     return (
       <div className="site-wrapper">
         <div className="site-wrapper-inner">
-          {!isUserSignedIn() ? (
-            <Signin handleSignIn={this.handleSignIn} />
-          ) : (
-            <Switch>
-              <Route
-                path="/patients/:username?"
-                render={routeProps => (
+          <Switch>
+            <Route
+              path="/patients/:username?"
+              render={routeProps =>
+                !isUserSignedIn() ? (
+                  <Signin handleSignIn={this.handleSignIn} />
+                ) : (
                   <Profile handleSignOut={this.handleSignOut} {...routeProps} />
-                )}
-              />
-              <Route
-                path="Hospital"
-                render={routeProps => <Hospital {...routeProps} />}
-              />
-              <Route
-                path="Insurance"
-                render={routeProps => <Insurance {...routeProps} />}
-              />
-            </Switch>
-          )}
+                )
+              }
+            />
+            <Route
+              exact
+              path="/hospital"
+              render={routeProps => <Hospital {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/insurance"
+              render={routeProps => <Insurance {...routeProps} />}
+            />
+            <Route path="/" render={routeProps => <div>homepage</div>} />
+          </Switch>
         </div>
       </div>
     );
   }
-
-  componentWillMount() {
-    if (isSignInPending()) {
-      handlePendingSignIn().then(userData => {
-        window.location = window.location.origin;
-      });
-    }
-  }
 }
+
+export default withRouter(App);
