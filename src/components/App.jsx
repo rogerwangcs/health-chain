@@ -1,5 +1,5 @@
 import React, { Component, Link } from "react";
-import { Switch, Route, withRouter} from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 
 import Signin from "./Signin.jsx";
 import {
