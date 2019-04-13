@@ -1,5 +1,5 @@
 import React, { Component, Link } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter} from "react-router-dom";
 
 import Signin from "./Signin.jsx";
 import {
@@ -10,7 +10,7 @@ import {
   signUserOut
 } from "blockstack";
 
-import Profile from "./Profile.jsx";
+import Patient from "./Patient.jsx";
 import Hospital from "./Hospital";
 import Insurance from "./Insurance";
 
@@ -47,16 +47,6 @@ class App extends Component {
         <div className="site-wrapper-inner">
           <Switch>
             <Route
-              path="/patients/:username?"
-              render={routeProps =>
-                !isUserSignedIn() ? (
-                  <Signin handleSignIn={this.handleSignIn} />
-                ) : (
-                  <Profile handleSignOut={this.handleSignOut} {...routeProps} />
-                )
-              }
-            />
-            <Route
               exact
               path="/hospital"
               render={routeProps => <Hospital {...routeProps} />}
@@ -66,7 +56,18 @@ class App extends Component {
               path="/insurance"
               render={routeProps => <Insurance {...routeProps} />}
             />
-            <Route path="/" render={routeProps => <div>homepage</div>} />
+            {/* <Route path="/" render={routeProps => <div>homepage</div>} /> */}
+            <Route
+              exact
+              path="/:username?"
+              render={routeProps =>
+                !isUserSignedIn() ? (
+                  <Signin handleSignIn={this.handleSignIn} />
+                ) : (
+                  <Patient handleSignOut={this.handleSignOut} {...routeProps} />
+                )
+              }
+            />
           </Switch>
         </div>
       </div>

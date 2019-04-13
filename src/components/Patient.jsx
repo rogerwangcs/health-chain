@@ -11,7 +11,7 @@ import {
 const avatarFallbackImage =
   "https://s3.amazonaws.com/onename/avatar-placeholder.png";
 
-export default class Profile extends Component {
+export default class Patient extends Component {
   constructor(props) {
     super(props);
 
@@ -33,6 +33,7 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     this.fetchData();
   }
 
