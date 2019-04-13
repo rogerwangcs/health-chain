@@ -1,10 +1,12 @@
 {
   "name": "Hello, Blockstack",
-  "start_url": "localhost:8080",
+  "start_url": "localhost:8080/patients",
   "description": "A simple demo of Blockstack Auth",
-  "icons": [{
-    "src": "http://localhost:8080/icon-192x192.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }]
+  "icons": [
+    {
+      "src": "http://localhost:8080/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
 }

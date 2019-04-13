@@ -1,7 +1,6 @@
 import React, { Component, Link } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import Profile from "./Profile.jsx";
 import Signin from "./Signin.jsx";
 import {
   isSignInPending,
@@ -10,6 +9,10 @@ import {
   handlePendingSignIn,
   signUserOut
 } from "blockstack";
+
+import Profile from "./Profile.jsx";
+import Hospital from "./Hospital";
+import Insurance from "./Insurance";
 
 export default class App extends Component {
   constructor(props) {
@@ -39,10 +42,18 @@ export default class App extends Component {
           ) : (
             <Switch>
               <Route
-                path="/:username?"
+                path="/patients/:username?"
                 render={routeProps => (
                   <Profile handleSignOut={this.handleSignOut} {...routeProps} />
                 )}
+              />
+              <Route
+                path="Hospital"
+                render={routeProps => <Hospital {...routeProps} />}
+              />
+              <Route
+                path="Insurance"
+                render={routeProps => <Insurance {...routeProps} />}
               />
             </Switch>
           )}
