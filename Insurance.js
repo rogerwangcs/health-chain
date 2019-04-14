@@ -58,6 +58,7 @@ export default class Insurance extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.newForm.id !== prevState.newForm.id) {
+      console.log(this.state.newForm);
       this.setState({ notification: true });
     }
   }
@@ -205,6 +206,7 @@ export default class Insurance extends Component {
         >
           {this.mapPatientCards()}
         </div>
+        {this.renderNotification.bind(this)}
         <NotificationContainer />
       </div>
     );
