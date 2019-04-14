@@ -16,15 +16,7 @@ export default class Insurance extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      patientKeys: [
-        "rooterbuster.id.blockstack",
-        "subraizahmed.id.blockstack",
-        "subraizahmed.id.blockstack",
-        "subraizahmed.id.blockstack",
-        "subraizahmed.id.blockstack",
-        "subraizahmed.id.blockstack",
-        "subraizahmed.id.blockstack"
-      ],
+      patientKeys: ["rooterbuster.id.blockstack", "subraizahmed.id.blockstack"],
       patients: []
     };
   }
@@ -68,14 +60,29 @@ export default class Insurance extends Component {
 
   mapPatientCards() {
     return this.state.patients.map((patient, index) => {
-      return <PatientCard key={index} patient={patient} />;
+      return (
+        <PatientCard
+          key={index}
+          patient={patient}
+          setApprovalStatus={this.setApprovalStatus}
+        />
+      );
     });
+  }
+
+  setApprovalStatus(username, approvalStatus) {
+    const options = { username: username, encrypt: false };
+    putFile(
+      "approvalStatus" + username.replace(/\./g, '_') + ".json",
+      JSON.stringify(approvalStatus),
+      options
+    );
   }
 
   render() {
     return (
       <div className="insuranceContainer">
-        <SideNav />
+        {/* <SideNav /> */}
         {this.mapPatientCards()}
       </div>
     );
@@ -86,6 +93,16 @@ const PatientCard = props => {
   return (
     <div className="patientCard">
       <p>{props.patient.username}</p>
+      <button
+        onClick={() => props.setApprovalStatus(props.patient.username, true)}
+      >
+        Approve
+      </button>
+      <button
+        onClick={() => props.setApprovalStatus(props.patient.username, false)}
+      >
+        Reject
+      </button>
     </div>
   );
 };

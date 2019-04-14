@@ -32,13 +32,20 @@ export default class Patient extends Component {
       newStatus: "",
       statuses: [],
       statusIndex: 0,
-      isLoading: false
+      isLoading: false,
+      approvalStatus: false
     };
   }
 
   componentDidMount() {
     console.log(this.props);
     this.fetchData();
+    setInterval(() => {
+      console.log("fetching...");
+      this.fetchData();
+      this.getApprovalStatus();
+      console.log(this.state.approvalStatus);
+    }, 500);
   }
 
   componentWillMount() {
@@ -46,9 +53,6 @@ export default class Patient extends Component {
       person: new Person(loadUserData().profile),
       username: loadUserData().username
     });
-    setInterval(() => {
-      this.fetchData();
-    }, 500);
   }
 
   handleNewStatusChange(event) {
@@ -68,7 +72,6 @@ export default class Patient extends Component {
     let status = {
       id: this.state.statusIndex++,
       text: statusText.trim(),
-      pending: true,
       created_at: Date.now()
     };
 
@@ -131,6 +134,18 @@ export default class Patient extends Component {
 
   isLocal() {
     return this.props.match.params.username ? false : true;
+  }
+
+  getApprovalStatus() {
+    const options = { username: this.state.username, decrypt: false };
+    getFile("approvalStatus" + this.state.username.replace(/\./g, '_') + ".json", options).then(
+      file => {
+        var status = JSON.parse(file || "[]");
+        this.setState({
+          approvalStatus: status
+        });
+      }
+    );
   }
 
   render() {
