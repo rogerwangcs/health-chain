@@ -1,0 +1,17 @@
+.insuranceContainer {
+  margin: auto;
+}
+.patientCard {
+  width: 70%;
+  height: 200px;
+  margin: 25px;
+  padding: 25px;
+  background-color: white;
+
+  border-radius: 25px;
+  box-shadow: 0px 10px 10px rgbga(0, 0, 0, 0.5);
+}
+
+.patientCard p {
+  color: black;
+}
