@@ -240,7 +240,7 @@ export default class Patient extends Component {
               className="col-md-12 statuses"
               style={{
                 overflowY: "scroll",
-                height: 280,
+                height: 350,
                 paddingTop: 0,
                 marginTop: 10
               }}
@@ -255,7 +255,7 @@ export default class Patient extends Component {
                     justifyContent: "space-between",
                     marginTop: 15,
                     marginBottom: 15,
-                    padding: 0,
+                    padding: "0px 15px",
                     borderBottom: ".2px solid black",
                     fontSize: 16,
                     fontFamily: "Avenir",
