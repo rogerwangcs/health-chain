@@ -39,7 +39,8 @@ export default class Insurance extends Component {
       patientProfiles: [],
       newForm: {},
       newForms: [],
-      notification: false
+      notification: false,
+      index: 0
     };
   }
 
@@ -52,33 +53,170 @@ export default class Insurance extends Component {
       await this.setState({ patientForms: [] });
       await this.state.patientKeys.forEach(async patientID => {
         this.getPatientForms(patientID);
-      }, 500);
+      }, 1500);
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.newForm.id !== prevState.newForm.id) {
       console.log(this.state.newForm);
+      console.log("component updated");
       this.setState({ notification: true });
     }
   }
 
   renderNotification() {
-    switch (this.state.notification) {
-      case true:
-        setTimeout(() => {
-          this.setState({ notification: false });
-        }, 3000);
-
-        return NotificationManager.success(
-          this.state.newForm.name,
-          this.state.newForm.requestAmount
-        );
-      case false:
-        return false;
-      default:
-        return false;
-    }
+    return (
+      <div
+        style={{
+          position: "fixed",
+          width: "100%",
+          height: "100%",
+          backgroundColor: this.state.notification
+            ? "rgba(0,0,0,.2)"
+            : "rgba(0,0,0,0)",
+          opacity: this.state.notification ? 1 : 0,
+          display: "flex",
+          transition: "all 1s ease-in-out",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <div
+          style={{
+            background: "linear-gradient(white, #f7f7f7)",
+            width: "50%",
+            padding: "30px 40px",
+            borderRadius: 100,
+            boxShadow: "1px 5px 10px rgba(0,0,0,.25)"
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              color: "black",
+              fontFamily: "Avenir",
+              fontWeight: "600",
+              fontSize: 26,
+              alignSelf: "flex-start",
+              marginBottom: 10
+            }}
+          >
+            Incoming request from {this.state.newForm.name}
+          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                color: "black",
+                fontFamily: "Avenir",
+                fontWeight: "300",
+                fontSize: 22,
+                marginRight: 10
+              }}
+            >
+              Payment Amount
+            </p>
+            <div
+              style={{
+                height: "2px",
+                border: "1px dotted rgba(0,0,0,.4)",
+                alignSelf: "center",
+                flexGrow: 1,
+                marginTop: "-10px",
+                paddingLeft: "15px",
+                paddingRight: "15px"
+              }}
+            />
+            <p
+              style={{
+                margin: 0,
+                marginLeft: 10,
+                color: "black",
+                fontFamily: "Avenir",
+                fontWeight: "300",
+                fontSize: 22
+              }}
+            >
+              {this.state.newForm.requestAmount}
+            </p>
+          </div>
+          <div
+            style={{
+              marginTop: 10,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                color: "black",
+                fontFamily: "Avenir",
+                fontWeight: "300",
+                fontSize: 22,
+                marginRight: 10
+              }}
+            >
+              Transaction ID
+            </p>
+            <div
+              style={{
+                height: "2px",
+                border: "1px dotted rgba(0,0,0,.4)",
+                alignSelf: "center",
+                flexGrow: 1,
+                marginTop: "-10px",
+                paddingLeft: "15px",
+                paddingRight: "15px",
+                marginBottom: "15px"
+              }}
+            />
+            <p
+              style={{
+                margin: 0,
+                marginLeft: 10,
+                color: "black",
+                fontFamily: "Avenir",
+                fontWeight: "300",
+                fontSize: 22
+              }}
+            >
+              {this.state.newForm.id}
+            </p>
+          </div>
+          <div
+            style={{
+              width: "95%",
+              height: "1px",
+              top: 10,
+              backgroundColor: "rgba(0,0,0,.2)",
+              margin: "0 auto"
+            }}
+          />
+          <button
+            style={{
+              marginTop: "15px",
+              borderRadius: 15,
+              backgroundColor: "white",
+              color: "black",
+              fontFamily: "Avenir",
+              boxShadow: "1px 4px 10px rbga(0,0,0,.2)"
+            }}
+            onClick={() => this.setState({ notification: false })}
+          >
+            Close Notification
+          </button>
+        </div>
+      </div>
+    );
   }
 
   getPatientProfile(patientID) {
@@ -206,8 +344,8 @@ export default class Insurance extends Component {
         >
           {this.mapPatientCards()}
         </div>
-        {this.renderNotification.bind(this)}
-        <NotificationContainer />
+
+        {this.renderNotification()}
       </div>
     );
   }

@@ -219,4 +219,3 @@ class HospitalForm extends Component {
 }
 
 export default withRouter(HospitalForm);
-
