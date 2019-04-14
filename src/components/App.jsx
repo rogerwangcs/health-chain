@@ -3,6 +3,7 @@ import { Switch, Route, withRouter } from "react-router-dom";
 
 import Signin from "./Signin.jsx";
 import HospitalSignIn from "./HospitalSignIn.jsx";
+import HospitalForm from "./HospitalForm.jsx";
 import {
   isSignInPending,
   isUserSignedIn,
@@ -56,6 +57,11 @@ class App extends Component {
               exact
               path="/hospitalSignIn"
               render={routeProps => <HospitalSignIn {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/hospitalform"
+              render={routeProps => <HospitalForm {...routeProps} />}
             />
             <Route
               exact

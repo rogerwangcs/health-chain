@@ -7,12 +7,13 @@ import {
   putFile,
   lookupProfile
 } from "blockstack";
+import { withRouter } from "react-router-dom";
 
 import { FaArrowRight } from "react-icons/fa";
 
 import "../styles/hospital.css";
 
-export default class Hospital extends Component {
+class Hospital extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -98,7 +99,6 @@ export default class Hospital extends Component {
   }
 
   render() {
-    console.log(this.state.statuses);
     return (
       <div
         style={{
@@ -206,17 +206,99 @@ export default class Hospital extends Component {
             style={{
               marginTop: "25px",
               backgroundColor: "white",
-              width: "80%",
-              padding: "30px 15px",
-              borderRadius: "25px"
+              width: "500px",
+              height: "76%",
+              padding: "25px 30px",
+              borderRadius: "5px",
+              overflowY: "scroll"
             }}
-          />
+          >
+            <p
+              style={{
+                color: "black",
+                fontSize: 14,
+                textAlign: "justify",
+                fontFamily: "Helvetica"
+              }}
+            >
+              We here at Health Chain are making a commitment to work with you
+              in your efforts to get better. To help you in this work, we agree
+              that: We will help you schedule regular appointments for medicine
+              refills. If we have to cancel or change your appointment for any
+              reason, we will make sure you have enough medication to last until
+              your next appointment. We will make sure that this treatment is as
+              safe as possible. We will check regularly to make sure you are not
+              having bad side effects. We will keep track of your prescriptions
+              and test for drug use regularly to help you feel like you are
+              being monitored well. We will help connect you with other forms of
+              treatment to help you with your condition. We will help set
+              treatment goals and monitor your progress in achieving those
+              goals. We will work with any other doctors or providers you are
+              seeing so that they can treat you safely and effectively. We will
+              work with your medical insurance providers to make sure you do not
+              go without medicine because of paperwork or other things they may
+              ask for. If you become addicted to these medications, we will help
+              you get treatment and get off of the medications that are causing
+              you problems safely, without getting sick.
+            </p>
+            <p
+              style={{
+                color: "black",
+                fontSize: 14,
+                textAlign: "justify",
+                fontFamily: "Helvetica"
+              }}
+            >
+              A release of liability, commonly referred to as a waiver of
+              reliability, a release form, a liability release form, an
+              assumption of risk form, a hold harmless agreement, or legal
+              release, is a legal document between two parties, referenced as
+              the Releasor and the Releasee. The purpose of a release of
+              liability, is to free the Releasee from legal liability for any
+              damages incurred by the Releasor. Put simply, it's an agreement
+              not to sue if the person or business involved in a risky activity
+              that's offered is somehow hurt or is subjected to some form of
+              damage.
+            </p>
+            <div
+              style={{ float: "left", display: "flex", alignItems: "center" }}
+            >
+              <input
+                style={{ width: "300px" }}
+                value={this.state.userId}
+                placeholder="Blockstack Signature"
+                disabled
+              />
+              <p
+                onClick={() =>
+                  this.setState({ userId: "subraizahmed.id.blockstack" })
+                }
+                style={{
+                  color: "black",
+                  backgroundColor: "green",
+                  borderRadius: 5,
+                  marginBottom: 0,
+                  marginLeft: "2%",
+                  width: 140,
+                  fontSize: 12,
+                  color: "white",
+                  fontFamily: "Avenir",
+                  fontWeight: "600",
+                  padding: "4px 20px"
+                }}
+              >
+                Sign With BlockStack ID
+              </p>
+            </div>
+          </div>
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
-              width: "100%",
-              padding: "30px 30px"
+              justifyContent: "space-around",
+              width: "40%",
+              margin: "0 auto",
+              padding: "30px 20px",
+              alignItems: "center"
             }}
           >
             <div
@@ -238,13 +320,14 @@ export default class Hospital extends Component {
               </p>
             </div>
             <p
+              onClick={() => this.props.history.push("/hospitalform")}
               size={32}
               style={{
                 backgroundColor: "purple",
                 borderRadius: 22,
                 color: "#f7f7f7",
                 padding: 5,
-                width: "6%",
+                width: "60px",
                 height: "auto"
               }}
             >
@@ -256,3 +339,5 @@ export default class Hospital extends Component {
     );
   }
 }
+
+export default withRouter(Hospital);
