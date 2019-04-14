@@ -19,6 +19,11 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 });
 
 module.exports = {
+  resolve: {
+    alias: {
+      core: path.join(__dirname, 'core'),
+    },
+  },
   entry: "./src/index.js",
   target: "web",
   output: {

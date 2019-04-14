@@ -1,0 +1,64 @@
+.hospitalSignInContainer {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("https://i.imgur.com/iNCDkpE.jpg");
+  background-size: cover;
+
+  padding-top: 75px;
+}
+
+.facialRecognitionSection h1 {
+  color: black;
+}
+
+.facialRecognitionSection p {
+  color: black;
+}
+
+.hospitalSignInContent {
+  overflow: hidden;
+  width: 700px;
+  height: 700px;
+  background-color: white;
+  margin: auto;
+  border-radius: 35px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.titleSection {
+  background: linear-gradient(#ed9a63, #ed7763);
+  height: 200px;
+  width: 100%;
+  padding: 25px;
+  margin: auto;
+  text-align: center;
+}
+
+.facialRecognitionSection {
+
+}
+
+.hospitalContainer {
+  width: 100%;
+  height: 100%;
+  background-color: #191919;
+}
+
+.sidebar {
+  float: left;
+  width: 450px;
+  height: 100%;
+  background-color: #450059;
+}
+
+.sidebar img {
+  width: 100px;
+  height: 100px;
+}
+
+.sidebar div {
+  display: inline;
+  margin-left: 25px;
+}
