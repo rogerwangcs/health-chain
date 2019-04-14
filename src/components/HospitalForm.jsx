@@ -87,8 +87,8 @@ class HospitalForm extends Component {
           width: "100%",
           height: "100%",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
           backgroundColor: "#f7f7f7"
         }}
       >
@@ -169,27 +169,40 @@ class HospitalForm extends Component {
             {this.renderPatientInformation()}
           </div>
         </div>
-        <div>
-          <img src={formImage} style={{ width: "75%", height: "auto" }} />
-        </div>
-
-        <p
-          onClick={() => {
-            this.sendFormInfo(this.props.patient.patientID);
-            // this.props.history.push("/hospitalSignIn");
-          }}
-          size={32}
+        <div
           style={{
-            backgroundColor: "purple",
-            borderRadius: 22,
-            color: "#f7f7f7",
-            padding: 5,
-            width: "60px",
-            height: "auto"
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column"
           }}
         >
-          Submit
-        </p>
+          <img
+            src={formImage}
+            style={{ width: "45%", height: "80%", marginBottom: "4%" }}
+          />
+          <p
+            onClick={() => {
+              this.sendFormInfo(this.props.patient.patientID);
+              this.props.history.push("/hospitalSignIn");
+            }}
+            style={{
+              backgroundColor: "purple",
+              borderRadius: "30px/50%",
+              color: "#f7f7f7",
+              padding: 5,
+              padding: "15px 25px",
+              height: "auto",
+              marginTop: "-10px",
+              fontSize: "22px",
+              boxShadow: "1px 3px 8px rgba(0,0,0,.4)"
+            }}
+          >
+            Submit
+          </p>
+        </div>
       </div>
     );
   }
