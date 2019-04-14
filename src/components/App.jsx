@@ -2,6 +2,7 @@ import React, { Component, Link } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 
 import Signin from "./Signin.jsx";
+import HospitalSignIn from "./HospitalSignIn.jsx";
 import {
   isSignInPending,
   isUserSignedIn,
@@ -11,7 +12,7 @@ import {
 } from "blockstack";
 
 import Patient from "./Patient.jsx";
-import Hospital from "./Hospital";
+import Hospital from "./Hospital.jsx";
 import Insurance from "./Insurance";
 
 class App extends Component {
@@ -22,7 +23,7 @@ class App extends Component {
   componentWillMount() {
     if (isSignInPending()) {
       handlePendingSignIn().then(userData => {
-        window.location = window.location.origin;
+        window.location = window.location.origin + "/patients";
       });
     }
   }
@@ -38,7 +39,7 @@ class App extends Component {
 
   handleSignOut(e) {
     e.preventDefault();
-    signUserOut(window.location.origin);
+    signUserOut(window.location.origin + "/patients");
   }
 
   render() {
@@ -50,6 +51,11 @@ class App extends Component {
               exact
               path="/hospital"
               render={routeProps => <Hospital {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/hospitalSignIn"
+              render={routeProps => <HospitalSignIn {...routeProps} />}
             />
             <Route
               exact
