@@ -45,7 +45,7 @@ export default class Patient extends Component {
       this.fetchData();
       this.getApprovalStatus();
       console.log(this.state.approvalStatus);
-    }, 500);
+    }, 50000);
   }
 
   componentWillMount() {

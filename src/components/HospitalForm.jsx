@@ -57,19 +57,23 @@ class HospitalForm extends Component {
       planID: 123,
       pcp: "asd",
       ipa: "asdfsas",
-      requestAmount: Math.floor(Math.random() * 100 + 500),
-      pending: true,
-      id: 4424
+      requestAmount: Math.floor(Math.random() * 100 + 500)
     };
 
-    const options = { encrypt: false };
-    putFile("sendFormInfo.json", JSON.stringify(form), options)
-      .then(() => {
-        console.log("Sent Form Info");
-      })
-      .catch(err => {
-        console.log(error);
-      });
+    const options = { username: username, encrypt: false };
+
+    getFile("patientForms.json", options).then(file => {
+      var patientForms = JSON.parse(file || "[]");
+      patientForms.push(form);
+
+      putFile("patientForms.json", JSON.stringify(patientForms), options)
+        .then(() => {
+          console.log("Sent Form Info");
+        })
+        .catch(err => {
+          console.log(error);
+        });
+    });
   }
 
   render() {
