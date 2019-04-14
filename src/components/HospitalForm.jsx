@@ -52,7 +52,7 @@ class HospitalForm extends Component {
   sendFormInfo(username) {
     let form = {
       name: this.props.patient.name,
-      status: 'pending',
+      status: "pending",
       walletAddress: "sdjglasdjlgajsdkl",
       walletBalance: 12000,
       planID: 123,
@@ -65,7 +65,7 @@ class HospitalForm extends Component {
     let options = { username: username, decrypt: false };
     getFile("patientForms.json", options).then(file => {
       let patientForms = JSON.parse(file || "[]");
-      patientForms.push(form);
+      patientForms.unshift(form);
 
       console.log(patientForms);
 
@@ -73,6 +73,15 @@ class HospitalForm extends Component {
       putFile("patientForms.json", JSON.stringify(patientForms), options)
         .then(() => {
           console.log("Sent Form Info");
+        })
+        .catch(err => {
+          console.log("asd");
+        });
+
+      //signal new form to insurance company
+      putFile("newForm.json", JSON.stringify(form), options)
+        .then(() => {
+          console.log("Sent New Form Info");
         })
         .catch(err => {
           console.log("asd");
@@ -209,3 +218,4 @@ class HospitalForm extends Component {
 }
 
 export default withRouter(HospitalForm);
+

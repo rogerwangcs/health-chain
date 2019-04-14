@@ -43,8 +43,6 @@ export default class Patient extends Component {
     setInterval(() => {
       console.log("fetching...");
       this.fetchData();
-      //this.getApprovalStatus();
-      //console.log(this.state.approvalStatus);
     }, 500);
   }
 
@@ -62,6 +60,7 @@ export default class Patient extends Component {
       getFile("patientForms.json", options)
         .then(file => {
           var statuses = JSON.parse(file || "[]");
+          console.log(statuses);
           this.setState({
             person: new Person(loadUserData().profile),
             username: loadUserData().username,
@@ -105,19 +104,6 @@ export default class Patient extends Component {
 
   isLocal() {
     return this.props.match.params.username ? false : true;
-  }
-
-  getApprovalStatus() {
-    const options = { decrypt: false };
-    getFile(
-      "approvalStatus" + this.state.username.replace(/\./g, "_") + ".json",
-      options
-    ).then(file => {
-      var status = JSON.parse(file || "[]");
-      this.setState({
-        approvalStatus: status
-      });
-    });
   }
 
   render() {
@@ -290,8 +276,12 @@ export default class Patient extends Component {
                       April 14, 2019
                     </p>
                   </div>
-                  <p style={{ color: status.pending ? "orange" : "green" }}>
-                    {status.pending ? "Pending" : "Approved"}
+                  <p
+                    style={{
+                      color: status.status === "Rejected" ? "orange" : "green"
+                    }}
+                  >
+                    {status.status}
                   </p>
                 </div>
               ))}
