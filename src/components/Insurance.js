@@ -37,22 +37,26 @@ export default class Insurance extends Component {
     };
   }
 
-  async componentWillMount() {
-    await this.state.patientKeys.forEach(async patientID => {
-      await this.getPatientProfile(patientID);
-      await this.getPatientForms(patientID);
-    });
-  }
+  // async componentWillMount() {
+  //   this.state.patientKeys.forEach(patientID => {
+  //     this.getPatientProfile(patientID);
+  //   });
+  //   setInterval(() => {
+  //     this.setState({ patientForms: [] });
+  //     this.state.patientKeys.forEach(patientID => {
+  //       this.getPatientForms(patientID);
+  //     }, 500);
+  //   });
+  // }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (
-    //   this.state.formInformation.requestAmount !==
-    //   prevState.formInformation.requestAmount
-    // ) {
-    //   console.log("update form information!");
-    //   console.log(this.state.formInformation);
-    // }
-    console.log(this.state.patientForms);
+    this.state.patientForms.forEach(patient => {
+      if (this.state.patientForms !== prevState.patientForms) {
+        console.log("update form information!");
+        console.log(this.state.formInformation);
+      }
+      console.log(this.state.patientForms);
+    });
   }
 
   getPatientProfile(patientID) {
@@ -79,7 +83,7 @@ export default class Insurance extends Component {
         }));
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
       });
   }
 
@@ -96,18 +100,24 @@ export default class Insurance extends Component {
   }
 
   setApprovalStatus(username, approvalStatus) {
-    const options = { username: username, encrypt: false };
-    putFile(
-      "approvalStatus" + username.replace(/\./g, "_") + ".json",
-      JSON.stringify(approvalStatus),
-      options
-    )
-      .then(() => {
-        console.log("Set approval status");
-      })
-      .catch(err => {
-        console.log(error);
+    let options = { username: username, decrypt: false };
+    getFile("patientForms.json", options).then(file => {
+      let patientForms = JSON.parse(file || "[]");
+
+      patientForms.forEach(user => {
+        console.log("important");
+        console.log(user);
       });
+
+      // options = { username: username, encrypt: false };
+      // putFile("patientForms.json", JSON.stringify(patientForms), options)
+      //   .then(() => {
+      //     console.log("Sent Form Info");
+      //   })
+      //   .catch(err => {
+      //     console.log("asd");
+      //   });
+    });
   }
 
   // getFormInformation() {
@@ -229,10 +239,7 @@ const PatientCard = props => {
         >
           {props.patient.description || "Hack the Heights 2019"}
         </p>
-        <p>
-          Next Billing Date:{" "}
-          {randomBillingDates[Math.floor(Math.random() * 2 + 0)]}
-        </p>
+        <p>Next Billing Date: {randomBillingDates[0]}</p>
       </div>
       <div
         style={{
@@ -253,10 +260,7 @@ const PatientCard = props => {
             backgroundColor: "green"
           }}
           onClick={() =>
-            props.setApprovalStatus(props.patient.userId, {
-              id: "4344",
-              value: true
-            })
+            props.setApprovalStatus(props.patient.userId, "Approved")
           }
         >
           Approve
@@ -270,7 +274,9 @@ const PatientCard = props => {
             borderTopRightRadius: 20,
             backgroundColor: "red"
           }}
-          onClick={() => props.setApprovalStatus(props.patient.userId, false)}
+          onClick={() =>
+            props.setApprovalStatus(props.patient.userId, "Rejected")
+          }
         >
           Reject
         </button>

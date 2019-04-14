@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
 // import posed from "react-pose";
 import Webcam from "react-webcam";
 import {
@@ -48,9 +47,9 @@ class HospitalSignIn extends Component {
   }
 
   componentDidMount() {
-    // setTimeout(() => {
-    //   this.authenticate();
-    // }, 200);
+    setTimeout(() => {
+      this.authenticate();
+    }, 200);
   }
 
   setRef(webcam) {
@@ -63,58 +62,6 @@ class HospitalSignIn extends Component {
     });
   }
 
-  capture() {
-    this.setState({
-      load: true
-    });
-
-    // captures the screenshot for the image
-    const imageSrc = this.webcam.getScreenshot();
-
-    axios
-      .post(
-        `https://api.kairos.com/enroll`,
-        {
-          gallery_name: "newCameriaGallery",
-          image: imageSrc,
-          subject_id: this.state.username
-        },
-        {
-          // you have to add your secret credentials here
-          headers: {
-            app_id: "8526fe70",
-            app_key: "c54adc8a267afa589d678b7fac5facec"
-          }
-        }
-      )
-      .then(response => {
-        // redux method for refining the JSON response is invoked
-        this.setState({
-          load: false
-        });
-      });
-  }
-
-  resetGallery() {
-    this.setState({ load: true });
-
-    axios
-      .post(
-        `https://api.kairos.com/gallery/remove`,
-        {
-          gallery_name: "newCameriaGallery"
-        },
-        {
-          headers: {
-            app_id: "8526fe70",
-            app_key: "c54adc8a267afa589d678b7fac5facec"
-          }
-        }
-      )
-      .then(response => {
-        this.setState({ load: false });
-      });
-  }
 
   async authenticate() {
     let patientInformation = [
@@ -125,7 +72,7 @@ class HospitalSignIn extends Component {
       { key: "Date of Birth", value: "Nov. 3rd, 1997" }
     ];
     this.props.setPatientInformation(patientInformation);
-    let patient = await this.getPatientProfile("subraizahmed.id.blockstack");
+    let patient = await this.getPatientProfile("rooterbuster.id.blockstack");
   }
 
   getPatientProfile(patientID) {

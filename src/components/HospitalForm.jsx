@@ -52,7 +52,7 @@ class HospitalForm extends Component {
   sendFormInfo(username) {
     let form = {
       name: this.props.patient.name,
-      pending: true,
+      status: 'pending',
       walletAddress: "sdjglasdjlgajsdkl",
       walletBalance: 12000,
       planID: 123,
