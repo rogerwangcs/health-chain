@@ -278,7 +278,12 @@ export default class Patient extends Component {
                   </div>
                   <p
                     style={{
-                      color: status.status === "Rejected" ? "orange" : "green"
+                      color:
+                        status.status === "Rejected"
+                          ? "red"
+                          : status.status === "Pending"
+                          ? "orange"
+                          : "green"
                     }}
                   >
                     {status.status}

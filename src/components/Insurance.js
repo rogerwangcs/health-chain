@@ -32,7 +32,8 @@ export default class Insurance extends Component {
       ],
       patientForms: [],
       patientProfiles: [],
-      newForm: {}
+      newForm: {},
+      newForms: []
     };
   }
 
@@ -52,7 +53,8 @@ export default class Insurance extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.newForm.id !== prevState.newForm.id) {
       console.log(this.state.newForm);
-      console.log("New Changes!");
+      let forms = this.state.newForms.unshift(this.state.newForm);
+      this.setState({ newForms: forms });
     }
   }
 

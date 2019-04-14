@@ -12,29 +12,7 @@ import {
 } from "blockstack";
 
 import "../styles/hospital.css";
-import mountainBG from "../images/mountains.png";
-
-// const Modal = posed.div({
-//   enter: {
-//     y: 0,
-//     opacity: 1,
-//     delay: 300,
-//     transition: {
-//       y: { type: 'spring', stiffness: 1000, damping: 15 },
-//       default: { duration: 300 }
-//     }
-//   },
-//   exit: {
-//     y: 50,
-//     opacity: 0,
-//     transition: { duration: 150 }
-//   }
-// });
-
-// const Shade = posed.div({
-//   enter: { opacity: 1 },
-//   exit: { opacity: 0 }
-// });
+import "../styles/checkloader.css";
 
 class HospitalSignIn extends Component {
   constructor(props) {
@@ -48,20 +26,12 @@ class HospitalSignIn extends Component {
 
   componentDidMount() {
     setTimeout(() => {
+      this.setState({ load: true });
+    }, 2000);
+    setTimeout(() => {
       this.authenticate();
-    }, 200);
+    }, 3500);
   }
-
-  setRef(webcam) {
-    this.webcam = webcam;
-  }
-
-  handleUsername(e) {
-    this.setState({
-      username: e.target.value
-    });
-  }
-
 
   async authenticate() {
     let patientInformation = [
@@ -103,8 +73,19 @@ class HospitalSignIn extends Component {
               width="100%"
               height="100%"
               audio={false}
-              ref={webcam => this.setRef(webcam)}
               screenshotFormat="image/png"
+            />
+          </div>
+        </div>
+        <div className="loaderContainer">
+          <div
+            className={
+              this.state.load ? "circle-loader load-complete" : "circle-loader"
+            }
+          >
+            <div
+              className="checkmark draw"
+              style={{ display: this.state.load ? "block" : "none" }}
             />
           </div>
         </div>
