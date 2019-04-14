@@ -156,7 +156,7 @@ export default class Patient extends Component {
           style={{
             width: "45%",
             height: "90%",
-            borderRadius: "50px",
+            borderRadius: "30px",
             margin: "0 auto",
             overflow: "hidden",
             boxShadow: "1px 3px 20px rgba(0,0,0,.5)",

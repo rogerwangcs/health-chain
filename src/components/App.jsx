@@ -24,7 +24,7 @@ class App extends Component {
   componentWillMount() {
     if (isSignInPending()) {
       handlePendingSignIn().then(userData => {
-        window.location = window.location.origin + "/patients";
+        window.location = window.location.origin;
       });
     }
   }
@@ -40,7 +40,7 @@ class App extends Component {
 
   handleSignOut(e) {
     e.preventDefault();
-    signUserOut(window.location.origin + "/patients");
+    signUserOut(window.location.origin);
   }
 
   render() {

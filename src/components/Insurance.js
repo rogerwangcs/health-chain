@@ -8,13 +8,23 @@ import {
   lookupProfile
 } from "blockstack";
 
+import SideNav from "./SideNav.jsx";
+
 import "../styles/insurance.css";
 
 export default class Insurance extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      patientKeys: ["rooterbuster.id.blockstack", "subraizahmed.id.blockstack"],
+      patientKeys: [
+        "rooterbuster.id.blockstack",
+        "subraizahmed.id.blockstack",
+        "subraizahmed.id.blockstack",
+        "subraizahmed.id.blockstack",
+        "subraizahmed.id.blockstack",
+        "subraizahmed.id.blockstack",
+        "subraizahmed.id.blockstack"
+      ],
       patients: []
     };
   }
@@ -65,8 +75,7 @@ export default class Insurance extends Component {
   render() {
     return (
       <div className="insuranceContainer">
-        {console.log(this.state.patients)}
-        asfasfa
+        <SideNav />
         {this.mapPatientCards()}
       </div>
     );

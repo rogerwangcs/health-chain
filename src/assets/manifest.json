@@ -1,6 +1,6 @@
 {
   "name": "Health Chain",
-  "start_url": "localhost:8080/patients",
+  "start_url": "localhost:8080",
   "description": "Painless Patient Information Sharing",
   "icons": [
     {
