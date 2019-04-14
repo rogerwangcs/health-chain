@@ -60,10 +60,12 @@ export default class Hospital extends Component {
         <div className="sidebar">
           <img src={this.state.person.avatarUrl()} />
           <div>
-            <p styles={{display: "inline"}}>{this.state.person.name()}</p>
+            <p styles={{ display: "inline" }}>{this.state.person.name()}</p>
           </div>
         </div>
-        <div className="hospitalContent">asf</div>
+        <div className="hospitalContent">
+          <div className="hospitalContentCard">asd</div>
+        </div>
       </div>
     );
   }

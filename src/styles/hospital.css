@@ -44,6 +44,8 @@
   width: 100%;
   height: 100%;
   background-color: #191919;
+  display: flex;
+  flex-direction: row;
 }
 
 .sidebar {
@@ -61,4 +63,21 @@
 .sidebar div {
   display: inline;
   margin-left: 25px;
+}
+
+.hospitalContent {
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.hospitalContentCard {
+  margin-top: 25px;
+  background-color: white;
+  width: 75%;
+  height: 200px;
+
+  border-radius: 25px;
 }
