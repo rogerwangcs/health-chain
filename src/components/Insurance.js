@@ -7,8 +7,15 @@ import {
   putFile,
   lookupProfile
 } from "blockstack";
-
-import SideNav from "./SideNav.jsx";
+import SideNav, {
+  Toggle,
+  Nav,
+  NavItem,
+  NavIcon,
+  NavText
+} from "@trendmicro/react-sidenav";
+import "@trendmicro/react-sidenav/dist/react-sidenav.css";
+import { FaHome, FaFileMedicalAlt } from "react-icons/fa";
 
 import "../styles/insurance.css";
 
@@ -21,7 +28,8 @@ export default class Insurance extends Component {
         "subraizahmed.id.blockstack",
         "alexkaang.id.blockstack"
       ],
-      patients: []
+      patients: [],
+      formInformation: {}
     };
   }
 
@@ -29,6 +37,17 @@ export default class Insurance extends Component {
     this.state.patientKeys.forEach(patientID => {
       this.getPatientInfo(patientID);
     });
+    setInterval(() => this.getFormInformation(), 500);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.formInformation.requestAmount !==
+      prevState.formInformation.requestAmount
+    ) {
+      console.log("update form information!");
+      console.log(this.state.formInformation);
+    }
   }
 
   getPatientProfile(patientID) {
@@ -90,10 +109,46 @@ export default class Insurance extends Component {
       });
   }
 
+  getFormInformation() {
+    const options = { decrypt: false };
+    getFile("sendFormInfo.json", options).then(file => {
+      var formInformation = JSON.parse(file || "[]");
+      this.setState({
+        formInformation: formInformation
+      });
+    });
+  }
+
   render() {
     return (
       <div className="insuranceContainer">
-        {/* <SideNav /> */}
+        <SideNav
+          onSelect={selected => {
+            // Add your code here
+          }}
+        >
+          <SideNav.Toggle />
+          <SideNav.Nav defaultSelected="home">
+            <NavItem eventKey="home">
+              <NavIcon>
+                <FaHome size={20} style={{ marginBottom: 0 }} />
+              </NavIcon>
+              <NavText>Home</NavText>
+            </NavItem>
+            <NavItem eventKey="charts">
+              <NavIcon>
+                <FaFileMedicalAlt size={20} style={{ marginBottom: 0 }} />
+              </NavIcon>
+              <NavText>Transactions</NavText>
+              <NavItem eventKey="charts/linechart">
+                <NavText>Past Transactions</NavText>
+              </NavItem>
+              <NavItem eventKey="charts/barchart">
+                <NavText>Pending Transactions</NavText>
+              </NavItem>
+            </NavItem>
+          </SideNav.Nav>
+        </SideNav>
         {this.mapPatientCards()}
       </div>
     );

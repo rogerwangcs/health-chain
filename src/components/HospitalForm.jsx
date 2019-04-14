@@ -9,6 +9,7 @@ import {
   putFile,
   lookupProfile
 } from "blockstack";
+import { throws } from "assert";
 
 const formImage = "https://i.imgur.com/sXKzPzR.png";
 
@@ -47,6 +48,28 @@ class HospitalForm extends Component {
       );
     });
   }
+
+  sendFormInfo(username) {
+    let form = {
+      name: this.props.patient.name,
+      walletAddress: "asd",
+      walletBalance: 999,
+      planID: 123,
+      pcp: "asd",
+      ipa: "asdfsas",
+      requestAmount: Math.floor(Math.random() * 100 + 500)
+    };
+
+    const options = { encrypt: false };
+    putFile("sendFormInfo.json", JSON.stringify(form), options)
+      .then(() => {
+        console.log("Sent Form Info");
+      })
+      .catch(err => {
+        console.log(error);
+      });
+  }
+
   render() {
     return (
       <div
@@ -139,6 +162,24 @@ class HospitalForm extends Component {
         <div>
           <img src={formImage} style={{ width: "75%", height: "auto" }} />
         </div>
+
+        <p
+          onClick={() => {
+            this.sendFormInfo(this.props.patient.username);
+            this.props.history.push("/hospitalSignIn");
+          }}
+          size={32}
+          style={{
+            backgroundColor: "purple",
+            borderRadius: 22,
+            color: "#f7f7f7",
+            padding: 5,
+            width: "60px",
+            height: "auto"
+          }}
+        >
+          Submit
+        </p>
       </div>
     );
   }
