@@ -19,6 +19,8 @@ import { FaHome, FaFileMedicalAlt } from "react-icons/fa";
 
 import "../styles/insurance.css";
 
+const cornerImage = "https://i.imgur.com/GLShQNf.png";
+
 export default class Insurance extends Component {
   constructor(props) {
     super(props);
@@ -29,14 +31,17 @@ export default class Insurance extends Component {
         "alexkaang.id.blockstack"
       ],
       patients: [],
+      patientProfiles: [],
       formInformation: {}
     };
   }
 
-  componentDidMount() {
-    this.state.patientKeys.forEach(patientID => {
+  async componentWillMount() {
+    await this.state.patientKeys.forEach(async patientID => {
+      await this.getPatientProfile(patientID);
       this.getPatientInfo(patientID);
     });
+    console.log(this.state.patientProfiles);
     setInterval(() => this.getFormInformation(), 500);
   }
 
@@ -51,14 +56,12 @@ export default class Insurance extends Component {
   }
 
   getPatientProfile(patientID) {
-    console.log(patientID);
-    lookupProfile("rooterbuster.id.blockstack")
+    let patientProfiles = this.state.patientProfiles;
+    lookupProfile(patientID)
       .then(profile => {
-        var joined = this.state.patients.concat({
-          profile: profile,
-          username: patientID
-        });
-        this.setState({ patients: joined });
+        profile.userId = patientID;
+        patientProfiles.push(profile);
+        this.setState({ patientProfiles });
       })
       .catch(error => {
         console.log(error);
@@ -77,12 +80,13 @@ export default class Insurance extends Component {
         this.setState({ patients: joined });
       })
       .catch(error => {
-        console.log("could not fetch userData");
+        console.log(patientID);
+        console.log(error);
       });
   }
 
   mapPatientCards() {
-    return this.state.patients.map((patient, index) => {
+    return this.state.patientProfiles.map((patient, index) => {
       return (
         <PatientCard
           key={index}
@@ -95,7 +99,6 @@ export default class Insurance extends Component {
 
   setApprovalStatus(username, approvalStatus) {
     const options = { username: username, encrypt: false };
-    console.log(username);
     putFile(
       "approvalStatus" + username.replace(/\./g, "_") + ".json",
       JSON.stringify(approvalStatus),
@@ -141,15 +144,28 @@ export default class Insurance extends Component {
               </NavIcon>
               <NavText>Transactions</NavText>
               <NavItem eventKey="charts/linechart">
-                <NavText>Past Transactions</NavText>
+                <NavText style={{ textAlign: "left" }}>
+                  Past Transactions
+                </NavText>
               </NavItem>
               <NavItem eventKey="charts/barchart">
-                <NavText>Pending Transactions</NavText>
+                <NavText style={{ textAlign: "left" }}>
+                  Pending Transactions
+                </NavText>
               </NavItem>
             </NavItem>
           </SideNav.Nav>
         </SideNav>
-        {this.mapPatientCards()}
+        <div
+          style={{
+            width: "93%",
+            display: "flex",
+            flexWrap: "wrap",
+            padding: 0
+          }}
+        >
+          {this.mapPatientCards()}
+        </div>
       </div>
     );
   }
@@ -158,9 +174,42 @@ export default class Insurance extends Component {
 const PatientCard = props => {
   return (
     <div className="patientCard">
-      <p>{props.patient.username}</p>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          alignItems: "flex-start"
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "Avenir",
+            fontWeight: "700",
+            fontSize: 33,
+            marginBottom: 2
+          }}
+        >
+          {props.patient.name}
+        </p>
+        <p
+          style={{
+            fontFamily: "Avenir",
+            fontWeight: "200",
+            fontSize: 15,
+            marginBottom: 2
+          }}
+        >
+          {props.patient.userId}
+        </p>
+      </div>
       <button
-        onClick={() => props.setApprovalStatus(props.patient.username, true)}
+        onClick={() =>
+          props.setApprovalStatus(props.patient.username, {
+            id: "4344",
+            value: true
+          })
+        }
       >
         Approve
       </button>
@@ -169,6 +218,16 @@ const PatientCard = props => {
       >
         Reject
       </button>
+      <img
+        src={"https://i.imgur.com/GLShQNf.png"}
+        style={{
+          width: "40%",
+          height: "auto",
+          alignSelf: "flex-end",
+          marginLeft: "70%",
+          opacity: 0.75
+        }}
+      />
     </div>
   );
 };

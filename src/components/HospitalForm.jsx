@@ -57,7 +57,9 @@ class HospitalForm extends Component {
       planID: 123,
       pcp: "asd",
       ipa: "asdfsas",
-      requestAmount: Math.floor(Math.random() * 100 + 500)
+      requestAmount: Math.floor(Math.random() * 100 + 500),
+      pending: true,
+      id: 4424
     };
 
     const options = { encrypt: false };
