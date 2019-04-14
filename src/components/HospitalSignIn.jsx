@@ -24,14 +24,7 @@ class HospitalSignIn extends Component {
     };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ load: true });
-    }, 2000);
-    setTimeout(() => {
-      this.authenticate();
-    }, 3500);
-  }
+  componentDidMount() {}
 
   async authenticate() {
     let patientInformation = [
@@ -62,7 +55,17 @@ class HospitalSignIn extends Component {
 
   render() {
     return (
-      <div className="hospitalSignInContainer">
+      <div
+        className="hospitalSignInContainer"
+        onClick={() => {
+          setTimeout(() => {
+            this.setState({ load: true });
+          }, 2000);
+          setTimeout(() => {
+            this.authenticate();
+          }, 3500);
+        }}
+      >
         <div className="hospitalSignInContent">
           <div className="titleSection">
             <h1>Welcome to Health Chain Hospital</h1>
