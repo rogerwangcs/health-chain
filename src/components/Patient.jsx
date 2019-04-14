@@ -73,7 +73,7 @@ export default class Patient extends Component {
     };
 
     statuses.push(status);
-    const options = { encrypt: false };
+    const options = { username: this.state.username, encrypt: false };
     putFile("userData.json", JSON.stringify(statuses), options).then(() => {
       this.setState({
         statuses: statuses
@@ -100,7 +100,6 @@ export default class Patient extends Component {
         });
     } else {
       const username = this.props.match.params.username;
-
       lookupProfile(username)
         .then(profile => {
           this.setState({
