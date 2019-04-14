@@ -16,7 +16,11 @@ export default class Insurance extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      patientKeys: ["rooterbuster.id.blockstack", "subraizahmed.id.blockstack"],
+      patientKeys: [
+        "rooterbuster.id.blockstack",
+        "subraizahmed.id.blockstack",
+        "alexkaang.id.blockstack"
+      ],
       patients: []
     };
   }
@@ -72,11 +76,18 @@ export default class Insurance extends Component {
 
   setApprovalStatus(username, approvalStatus) {
     const options = { username: username, encrypt: false };
+    console.log(username);
     putFile(
-      "approvalStatus" + username.replace(/\./g, '_') + ".json",
+      "approvalStatus" + username.replace(/\./g, "_") + ".json",
       JSON.stringify(approvalStatus),
       options
-    );
+    )
+      .then(() => {
+        console.log("Set approval status");
+      })
+      .catch(err => {
+        console.log(error);
+      });
   }
 
   render() {

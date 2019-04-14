@@ -137,15 +137,16 @@ export default class Patient extends Component {
   }
 
   getApprovalStatus() {
-    const options = { username: this.state.username, decrypt: false };
-    getFile("approvalStatus" + this.state.username.replace(/\./g, '_') + ".json", options).then(
-      file => {
-        var status = JSON.parse(file || "[]");
-        this.setState({
-          approvalStatus: status
-        });
-      }
-    );
+    const options = { decrypt: false };
+    getFile(
+      "approvalStatus" + this.state.username.replace(/\./g, "_") + ".json",
+      options
+    ).then(file => {
+      var status = JSON.parse(file || "[]");
+      this.setState({
+        approvalStatus: status
+      });
+    });
   }
 
   render() {
