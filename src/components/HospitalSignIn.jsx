@@ -37,9 +37,9 @@ class HospitalSignIn extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.authenticate();
-    }, 5000);
+    // setTimeout(() => {
+    //   this.authenticate();
+    // }, 5000);
   }
 
   authenticate() {
