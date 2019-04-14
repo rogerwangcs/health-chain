@@ -69,6 +69,7 @@ export default class Insurance extends Component {
     return (
       <div
         style={{
+          zIndex: this.state.notification ? 3 : -1,
           position: "fixed",
           width: "100%",
           height: "100%",
