@@ -30,13 +30,7 @@ class Hospital extends Component {
       statuses: [],
       statusIndex: 0,
       isLoading: false,
-      patientInformation: [
-        { key: "Insurance Plan ID", value: "W267123-DF43" },
-        { key: "GRP#", value: "894213-06TH" },
-        { key: "PCP", value: "Kang, Alex" },
-        { key: "IPA", value: "Mass General Hospital" },
-        { key: "Date of Birth", value: "Nov. 3rd, 1997" }
-      ]
+      patientInformation: this.props.patientInformation
     };
   }
 
@@ -129,7 +123,7 @@ class Hospital extends Component {
             }}
           >
             <img
-              src={this.state.person.avatarUrl()}
+              src={this.props.patient.image[0].contentUrl}
               style={{
                 width: "20%",
                 height: "auto",
@@ -145,7 +139,7 @@ class Hospital extends Component {
               }}
             >
               <p style={{ fontWeight: "600", textAlign: "left" }}>
-                {this.state.person.name()}
+                {this.props.patient.name}
               </p>
               <p style={{ fontWeight: "200", textAlign: "left" }}>
                 Mass Mutual Health Insurance
@@ -271,7 +265,7 @@ class Hospital extends Component {
               />
               <p
                 onClick={() =>
-                  this.setState({ userId: "subraizahmed.id.blockstack" })
+                  this.setState({ userId: this.props.patient.patientID })
                 }
                 style={{
                   color: "black",

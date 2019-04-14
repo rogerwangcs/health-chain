@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 // import posed from "react-pose";
 import Webcam from "react-webcam";
+import {
+  isSignInPending,
+  loadUserData,
+  Person,
+  getFile,
+  putFile,
+  lookupProfile
+} from "blockstack";
 
 import "../styles/hospital.css";
 import mountainBG from "../images/mountains.png";
@@ -37,13 +45,36 @@ class HospitalSignIn extends Component {
   }
 
   componentDidMount() {
-    // setTimeout(() => {
-    //   this.authenticate();
-    // }, 5000);
+    setTimeout(() => {
+      this.authenticate();
+    }, 5000);
   }
 
-  authenticate() {
-    this.props.history.push("/hospital");
+  async authenticate() {
+    let patientInformation = [
+      { key: "Insurance Plan ID", value: "W267123-DF43" },
+      { key: "GRP#", value: "894213-06TH" },
+      { key: "PCP", value: "Kang, Alex" },
+      { key: "IPA", value: "Mass General Hospital" },
+      { key: "Date of Birth", value: "Nov. 3rd, 1997" }
+    ];
+    this.props.setPatientInformation(patientInformation);
+    let patient = await this.getPatientProfile("rooterbuster.id.blockstack");
+  }
+
+  getPatientProfile(patientID) {
+    lookupProfile(patientID)
+      .then(profile => {
+        profile.patientID = patientID;
+        console.log("profile incoming: ");
+        console.log(profile);
+        this.props.setPatient(profile);
+        this.props.history.push("/hospital");
+        return profile;
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {

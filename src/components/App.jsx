@@ -19,6 +19,21 @@ import Insurance from "./Insurance";
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      patientInformation: [],
+      patient: {}
+    };
+  }
+
+  setPatientInformation(patientInformation) {
+    console.log(patientInformation);
+    this.setState({ patientInformation });
+  }
+
+  setPatient(patient) {
+    console.log(patient);
+    this.setState({ patient });
   }
 
   componentWillMount() {
@@ -51,17 +66,35 @@ class App extends Component {
             <Route
               exact
               path="/hospital"
-              render={routeProps => <Hospital {...routeProps} />}
+              render={routeProps => (
+                <Hospital
+                  {...routeProps}
+                  patient={this.state.patient}
+                  patientInformation={this.state.patientInformation}
+                />
+              )}
             />
             <Route
               exact
               path="/hospitalSignIn"
-              render={routeProps => <HospitalSignIn {...routeProps} />}
+              render={routeProps => (
+                <HospitalSignIn
+                  {...routeProps}
+                  setPatientInformation={this.setPatientInformation.bind(this)}
+                  setPatient={this.setPatient.bind(this)}
+                />
+              )}
             />
             <Route
               exact
               path="/hospitalform"
-              render={routeProps => <HospitalForm {...routeProps} />}
+              render={routeProps => (
+                <HospitalForm
+                  {...routeProps}
+                  patient={this.state.patient}
+                  patientInformation={this.state.patientInformation}
+                />
+              )}
             />
             <Route
               exact
