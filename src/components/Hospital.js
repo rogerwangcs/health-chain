@@ -22,8 +22,21 @@ export default class Hospital extends Component {
   }
 
   fetchData() {
-    const options = { decrypt: false };
-    getFile("statuses.json", options)
+    const username = this.props.match.params.username;
+
+    lookupProfile(username)
+      .then(profile => {
+        this.setState({
+          person: new Person(loadUserData().profile),
+          username: username
+        });
+      })
+      .catch(error => {
+        console.log("could not resolve profile");
+      });
+
+    const options = { username: username, decrypt: false };
+    getFile("userData.json", options)
       .then(file => {
         var statuses = JSON.parse(file || "[]");
         this.setState({

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "ngrok": "./node_modules/.bin/ngrok http 8080 -host-header='localhost:8080'"
   },
   "repository": {
     "type": "git",
@@ -36,8 +37,10 @@
   "dependencies": {
     "blockstack": "^18.0.4",
     "bootstrap": "^3.3.7",
+    "ngrok": "^3.1.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-icons": "^3.5.0",
     "react-router-dom": "^5.0.0"
   }
 }

@@ -8,8 +8,12 @@ import {
   lookupProfile
 } from "blockstack";
 
+import { FaSignOutAlt, FaBars } from "react-icons/fa";
+
 const avatarFallbackImage =
   "https://s3.amazonaws.com/onename/avatar-placeholder.png";
+
+const backgroundImage = "https://i.imgur.com/2p9NWcr.jpg";
 
 export default class Patient extends Component {
   constructor(props) {
@@ -42,6 +46,9 @@ export default class Patient extends Component {
       person: new Person(loadUserData().profile),
       username: loadUserData().username
     });
+    setInterval(() => {
+      this.fetchData();
+    }, 500);
   }
 
   handleNewStatusChange(event) {
@@ -61,12 +68,13 @@ export default class Patient extends Component {
     let status = {
       id: this.state.statusIndex++,
       text: statusText.trim(),
+      pending: true,
       created_at: Date.now()
     };
 
-    statuses.unshift(status);
+    statuses.push(status);
     const options = { encrypt: false };
-    putFile("statuses.json", JSON.stringify(statuses), options).then(() => {
+    putFile("userData.json", JSON.stringify(statuses), options).then(() => {
       this.setState({
         statuses: statuses
       });
@@ -77,7 +85,7 @@ export default class Patient extends Component {
     this.setState({ isLoading: true });
     if (this.isLocal()) {
       const options = { decrypt: false };
-      getFile("statuses.json", options)
+      getFile("userData.json", options)
         .then(file => {
           var statuses = JSON.parse(file || "[]");
           this.setState({
@@ -105,7 +113,7 @@ export default class Patient extends Component {
         });
 
       const options = { username: username, decrypt: false };
-      getFile("statuses.json", options)
+      getFile("userData.json", options)
         .then(file => {
           var statuses = JSON.parse(file || "[]");
           this.setState({
@@ -132,11 +140,69 @@ export default class Patient extends Component {
     const { username } = this.state;
 
     return !isSignInPending() && person ? (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-offset-3 col-md-6">
-            <div className="col-md-12">
-              <div className="avatar-section">
+      <div
+        className="container"
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${backgroundImage})`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <div
+          className="row"
+          style={{
+            width: "45%",
+            height: "90%",
+            borderRadius: "50px",
+            margin: "0 auto",
+            overflow: "hidden",
+            boxShadow: "1px 3px 20px rgba(0,0,0,.5)",
+            backgroundColor: "white"
+          }}
+        >
+          <div>
+            <div>
+              <div
+                className="avatar-section"
+                style={{
+                  background: "linear-gradient(#ed9a63, #ed7763)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <FaBars
+                    style={{
+                      zIndex: 2,
+                      color: "white",
+                      marginLeft: "4%",
+                      marginTop: "4%"
+                    }}
+                    size={27}
+                  />
+                  <FaSignOutAlt
+                    onClick={handleSignOut.bind(this)}
+                    style={{
+                      zIndex: 2,
+                      color: "white",
+                      marginRight: "4%",
+                      marginTop: "4%"
+                    }}
+                    size={27}
+                  />
+                </div>
                 <img
                   src={
                     person.avatarUrl()
@@ -145,51 +211,129 @@ export default class Patient extends Component {
                   }
                   className="img-rounded avatar"
                   id="avatar-image"
+                  style={{
+                    borderRadius: "50%",
+                    border: "white 3px solid",
+                    minWidth: "25%",
+                    height: "auto"
+                  }}
                 />
-                <div className="username">
-                  <h1>
+                <div className="username" style={{ fontFamily: "Avenir" }}>
+                  <h1 style={{ fontWeight: "800" }}>
                     <span id="heading-name">
                       {person.name() ? person.name() : "Nameless Person"}
                     </span>
                   </h1>
-                  <span>{username}</span>
-                  {this.isLocal() && (
-                    <span>
-                      &nbsp;|&nbsp;
-                      <a onClick={handleSignOut.bind(this)}>(Logout)</a>
-                    </span>
-                  )}
+                  <p style={{ textAlign: "center", fontWeight: "600" }}>
+                    Mass Mutual Health Insurance
+                  </p>
+                  <p
+                    style={{
+                      textAlign: "center",
+                      fontWeight: "200",
+                      marginBottom: 50
+                    }}
+                  >
+                    {username}
+                  </p>
                 </div>
               </div>
             </div>
-            {this.isLocal() && (
-              <div className="new-status">
-                <div className="col-md-12">
-                  <textarea
-                    className="input-status"
-                    value={this.state.newStatus}
-                    onChange={e => this.handleNewStatusChange(e)}
-                    placeholder="What's on your mind?"
-                  />
-                </div>
-                <div className="col-md-12 text-right">
-                  <button
-                    className="btn btn-primary btn-lg"
-                    onClick={e => this.handleNewStatusSubmit(e)}
+            <div
+              style={{
+                backgroundColor: "white",
+                width: "60%",
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "0 auto",
+                borderRadius: "50px",
+                marginTop: -50,
+                boxShadow: "1px 3px 20px rgba(244, 152, 66, .4)"
+              }}
+            >
+              <p
+                style={{
+                  color: "orange",
+                  marginTop: "2%",
+                  fontFamily: "Avenir",
+                  fontSize: 18
+                }}
+              >
+                Past Visits
+              </p>
+            </div>
+            <div
+              className="col-md-12 statuses"
+              style={{
+                overflowY: "scroll",
+                height: 280,
+                paddingTop: 0,
+                marginTop: 10
+              }}
+            >
+              {this.state.isLoading}
+              {this.state.statuses.map((status, index) => (
+                <div
+                  key={status.id}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 15,
+                    marginBottom: 15,
+                    padding: 0,
+                    borderBottom: ".2px solid black",
+                    fontSize: 16,
+                    fontFamily: "Avenir",
+                    color: "black"
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start"
+                    }}
                   >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            )}
-            <div className="col-md-12 statuses">
-              {this.state.isLoading && <span>Loading...</span>}
-              {this.state.statuses.map(status => (
-                <div className="status" key={status.id}>
-                  {status.text}
+                    <p>
+                      Visit #{this.state.statuses.length - index}:{" "}
+                      {
+                        this.state.statuses[
+                          this.state.statuses.length - index - 1
+                        ].text
+                      }
+                    </p>
+                    <p style={{ color: "grey", fontWeight: "100" }}>
+                      April 14, 2019
+                    </p>
+                  </div>
+                  <p style={{ color: status.pending ? "orange" : "green" }}>
+                    {status.pending ? "Pending" : "Approved"}
+                  </p>
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        <div className="new-status">
+          <div className="col-md-12">
+            <textarea
+              className="input-status"
+              value={this.state.newStatus}
+              onChange={e => this.handleNewStatusChange(e)}
+              placeholder="What's on your mind?"
+            />
+          </div>
+          <div className="col-md-12 text-right">
+            <button
+              className="btn btn-primary btn-lg"
+              onClick={e => this.handleNewStatusSubmit(e)}
+            >
+              Submit
+            </button>
           </div>
         </div>
       </div>
