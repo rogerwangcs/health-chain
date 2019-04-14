@@ -88,7 +88,7 @@ export default class Patient extends Component {
     this.setState({ isLoading: true });
     if (this.isLocal()) {
       const options = { decrypt: false };
-      getFile("userData.json", options)
+      getFile("patientForms.json", options)
         .then(file => {
           var statuses = JSON.parse(file || "[]");
           this.setState({
@@ -115,7 +115,7 @@ export default class Patient extends Component {
         });
 
       const options = { username: username, decrypt: false };
-      getFile("userData.json", options)
+      getFile("patientForms.json", options)
         .then(file => {
           var statuses = JSON.parse(file || "[]");
           this.setState({
@@ -315,9 +315,7 @@ export default class Patient extends Component {
                     <p>
                       Visit #{this.state.statuses.length - index}:{" "}
                       {
-                        this.state.statuses[
-                          this.state.statuses.length - index - 1
-                        ].text
+                        status.name
                       }
                     </p>
                     <p style={{ color: "grey", fontWeight: "100" }}>

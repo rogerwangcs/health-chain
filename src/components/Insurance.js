@@ -70,7 +70,7 @@ export default class Insurance extends Component {
 
   getPatientInfo(patientID) {
     const options = { username: patientID, decrypt: false };
-    getFile("userData.json", options)
+    getFile("patientForms.json", options)
       .then(file => {
         var userData = JSON.parse(file || "[]");
         var joined = this.state.patients.concat({
@@ -113,12 +113,10 @@ export default class Insurance extends Component {
   }
 
   getFormInformation() {
-    const options = { decrypt: false };
-    getFile("sendFormInfo.json", options).then(file => {
-      var formInformation = JSON.parse(file || "[]");
-      this.setState({
-        formInformation: formInformation
-      });
+    let options = { username: 'rooterbuster.id.blockstack', decrypt: false };
+    getFile("patientForms.json", options).then(file => {
+      let patientForms = JSON.parse(file || "[]");
+      console.log(patientForms);
     });
   }
 

@@ -50,28 +50,33 @@ class HospitalForm extends Component {
   }
 
   sendFormInfo(username) {
+
     let form = {
       name: this.props.patient.name,
-      walletAddress: "asd",
-      walletBalance: 999,
+      walletAddress: "sdjglasdjlgajsdkl",
+      walletBalance: 12000,
       planID: 123,
       pcp: "asd",
       ipa: "asdfsas",
       requestAmount: Math.floor(Math.random() * 100 + 500)
     };
 
-    const options = { username: username, encrypt: false };
-
+    let options = { username: username, decrypt: false };
     getFile("patientForms.json", options).then(file => {
-      var patientForms = JSON.parse(file || "[]");
-      patientForms.push(form);
+      let patientForms = JSON.parse(file || "[]");
+      patientForms.push(form)
 
+      // arr.push(patientForms);
+      // arr.push(form);
+      console.log(patientForms);
+
+      options = { username: username, encrypt: false };
       putFile("patientForms.json", JSON.stringify(patientForms), options)
         .then(() => {
           console.log("Sent Form Info");
         })
         .catch(err => {
-          console.log(error);
+          console.log("asd");
         });
     });
   }
@@ -171,8 +176,8 @@ class HospitalForm extends Component {
 
         <p
           onClick={() => {
-            this.sendFormInfo(this.props.patient.username);
-            this.props.history.push("/hospitalSignIn");
+            this.sendFormInfo(this.props.patient.patientID);
+            // this.props.history.push("/hospitalSignIn");
           }}
           size={32}
           style={{
