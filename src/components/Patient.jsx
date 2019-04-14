@@ -43,44 +43,15 @@ export default class Patient extends Component {
     setInterval(() => {
       console.log("fetching...");
       this.fetchData();
-      this.getApprovalStatus();
-      console.log(this.state.approvalStatus);
-    }, 50000);
+      //this.getApprovalStatus();
+      //console.log(this.state.approvalStatus);
+    }, 500);
   }
 
   componentWillMount() {
     this.setState({
       person: new Person(loadUserData().profile),
       username: loadUserData().username
-    });
-  }
-
-  handleNewStatusChange(event) {
-    this.setState({ newStatus: event.target.value });
-  }
-
-  handleNewStatusSubmit(event) {
-    this.saveNewStatus(this.state.newStatus);
-    this.setState({
-      newStatus: ""
-    });
-  }
-
-  saveNewStatus(statusText) {
-    let statuses = this.state.statuses;
-
-    let status = {
-      id: this.state.statusIndex++,
-      text: statusText.trim(),
-      created_at: Date.now()
-    };
-
-    statuses.push(status);
-    const options = { username: this.state.username, encrypt: false };
-    putFile("userData.json", JSON.stringify(statuses), options).then(() => {
-      this.setState({
-        statuses: statuses
-      });
     });
   }
 
@@ -291,7 +262,7 @@ export default class Patient extends Component {
               {this.state.isLoading}
               {this.state.statuses.map((status, index) => (
                 <div
-                  key={status.id}
+                  key={index}
                   style={{
                     display: "flex",
                     flexDirection: "row",
@@ -313,10 +284,7 @@ export default class Patient extends Component {
                     }}
                   >
                     <p>
-                      Visit #{this.state.statuses.length - index}:{" "}
-                      {
-                        status.name
-                      }
+                      Visit #{this.state.statuses.length - index}: {status.name}
                     </p>
                     <p style={{ color: "grey", fontWeight: "100" }}>
                       April 14, 2019
@@ -328,25 +296,6 @@ export default class Patient extends Component {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        <div className="new-status">
-          <div className="col-md-12">
-            <textarea
-              className="input-status"
-              value={this.state.newStatus}
-              onChange={e => this.handleNewStatusChange(e)}
-              placeholder="What's on your mind?"
-            />
-          </div>
-          <div className="col-md-12 text-right">
-            <button
-              className="btn btn-primary btn-lg"
-              onClick={e => this.handleNewStatusSubmit(e)}
-            >
-              Submit
-            </button>
           </div>
         </div>
       </div>

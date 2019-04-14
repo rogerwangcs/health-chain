@@ -50,24 +50,23 @@ class HospitalForm extends Component {
   }
 
   sendFormInfo(username) {
-
     let form = {
       name: this.props.patient.name,
+      pending: true,
       walletAddress: "sdjglasdjlgajsdkl",
       walletBalance: 12000,
       planID: 123,
       pcp: "asd",
       ipa: "asdfsas",
-      requestAmount: Math.floor(Math.random() * 100 + 500)
+      requestAmount: Math.floor(Math.random() * 100 + 500),
+      id: Math.floor(Math.random() * 9999 + 1000)
     };
 
     let options = { username: username, decrypt: false };
     getFile("patientForms.json", options).then(file => {
       let patientForms = JSON.parse(file || "[]");
-      patientForms.push(form)
+      patientForms.push(form);
 
-      // arr.push(patientForms);
-      // arr.push(form);
       console.log(patientForms);
 
       options = { username: username, encrypt: false };

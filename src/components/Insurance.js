@@ -21,6 +21,8 @@ import "../styles/insurance.css";
 
 const cornerImage = "https://i.imgur.com/GLShQNf.png";
 
+const randomBillingDates = ["April 23, 2019", "May 5, 2019", "May 17, 2019"];
+
 export default class Insurance extends Component {
   constructor(props) {
     super(props);
@@ -30,29 +32,27 @@ export default class Insurance extends Component {
         "subraizahmed.id.blockstack",
         "alexkaang.id.blockstack"
       ],
-      patients: [],
-      patientProfiles: [],
-      formInformation: {}
+      patientForms: [],
+      patientProfiles: []
     };
   }
 
   async componentWillMount() {
     await this.state.patientKeys.forEach(async patientID => {
       await this.getPatientProfile(patientID);
-      this.getPatientInfo(patientID);
+      await this.getPatientForms(patientID);
     });
-    console.log(this.state.patientProfiles);
-    setInterval(() => this.getFormInformation(), 500);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.formInformation.requestAmount !==
-      prevState.formInformation.requestAmount
-    ) {
-      console.log("update form information!");
-      console.log(this.state.formInformation);
-    }
+    // if (
+    //   this.state.formInformation.requestAmount !==
+    //   prevState.formInformation.requestAmount
+    // ) {
+    //   console.log("update form information!");
+    //   console.log(this.state.formInformation);
+    // }
+    console.log(this.state.patientForms);
   }
 
   getPatientProfile(patientID) {
@@ -68,19 +68,17 @@ export default class Insurance extends Component {
       });
   }
 
-  getPatientInfo(patientID) {
+  getPatientForms(patientID) {
+    let patientForms = this.state.patientForms;
     const options = { username: patientID, decrypt: false };
     getFile("patientForms.json", options)
       .then(file => {
-        var userData = JSON.parse(file || "[]");
-        var joined = this.state.patients.concat({
-          userData: userData,
-          username: patientID
-        });
-        this.setState({ patients: joined });
+        var patientForms = JSON.parse(file || "[]");
+        this.setState(prevState => ({
+          patientForms: [...prevState.patientForms, patientForms]
+        }));
       })
       .catch(error => {
-        console.log(patientID);
         console.log(error);
       });
   }
@@ -112,13 +110,13 @@ export default class Insurance extends Component {
       });
   }
 
-  getFormInformation() {
-    let options = { username: 'rooterbuster.id.blockstack', decrypt: false };
-    getFile("patientForms.json", options).then(file => {
-      let patientForms = JSON.parse(file || "[]");
-      console.log(patientForms);
-    });
-  }
+  // getFormInformation() {
+  //   let options = { username: 'rooterbuster.id.blockstack', decrypt: false };
+  //   getFile("patientForms.json", options).then(file => {
+  //     let patientForms = JSON.parse(file || "[]");
+  //     console.log(patientForms);
+  //   });
+  // }
 
   render() {
     return (
@@ -172,56 +170,117 @@ export default class Insurance extends Component {
 const PatientCard = props => {
   return (
     <div className="patientCard">
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            alignItems: "flex-start"
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "Avenir",
+              fontWeight: "700",
+              fontSize: 33,
+              marginBottom: 2
+            }}
+          >
+            {props.patient.name}
+          </p>
+          <p
+            style={{
+              fontFamily: "Avenir",
+              fontWeight: "200",
+              fontSize: 15,
+              marginBottom: 2
+            }}
+          >
+            {props.patient.userId}
+          </p>
+        </div>
+        <img
+          src={props.patient.image[0].contentUrl}
+          style={{
+            width: "20%",
+            height: "20%",
+            borderRadius: "50%",
+            border: ".5px dashed navy"
+          }}
+        />
+      </div>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          alignItems: "flex-start"
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+          flexDirection: "column"
         }}
       >
         <p
           style={{
             fontFamily: "Avenir",
             fontWeight: "700",
-            fontSize: 33,
-            marginBottom: 2
+            fontSize: 16,
+            marginBottom: 2,
+            marginTop: 10
           }}
         >
-          {props.patient.name}
+          {props.patient.description || "Hack the Heights 2019"}
         </p>
-        <p
-          style={{
-            fontFamily: "Avenir",
-            fontWeight: "200",
-            fontSize: 15,
-            marginBottom: 2
-          }}
-        >
-          {props.patient.userId}
+        <p>
+          Next Billing Date:{" "}
+          {randomBillingDates[Math.floor(Math.random() * 2 + 0)]}
         </p>
       </div>
-      <button
-        onClick={() =>
-          props.setApprovalStatus(props.patient.username, {
-            id: "4344",
-            value: true
-          })
-        }
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "flex-end",
+          marginTop: "7%",
+          fontFamily: "Avenir"
+        }}
       >
-        Approve
-      </button>
-      <button
-        onClick={() => props.setApprovalStatus(props.patient.username, false)}
-      >
-        Reject
-      </button>
+        <button
+          style={{
+            marginRight: 15,
+            width: "85px",
+            padding: "5px 5px",
+            borderBottomLeftRadius: 20,
+            borderTopLeftRadius: 20,
+            backgroundColor: "green"
+          }}
+          onClick={() =>
+            props.setApprovalStatus(props.patient.userId, {
+              id: "4344",
+              value: true
+            })
+          }
+        >
+          Approve
+        </button>
+        <button
+          style={{
+            width: "85px",
+            padding: "5px 5px",
+            marginRight: 15,
+            borderBottomRightRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: "red"
+          }}
+          onClick={() => props.setApprovalStatus(props.patient.userId, false)}
+        >
+          Reject
+        </button>
+      </div>
       <img
         src={"https://i.imgur.com/GLShQNf.png"}
         style={{
           width: "40%",
           height: "auto",
-          alignSelf: "flex-end",
+          marginTop: "-10%",
           marginLeft: "70%",
           opacity: 0.75
         }}
