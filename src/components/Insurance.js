@@ -16,6 +16,11 @@ import SideNav, {
 } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FaHome, FaFileMedicalAlt } from "react-icons/fa";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import "../styles/insurance.css";
 
 import PatientCard from "./PatientCard.jsx";
 
@@ -33,7 +38,8 @@ export default class Insurance extends Component {
       patientForms: [],
       patientProfiles: [],
       newForm: {},
-      newForms: []
+      newForms: [],
+      notification: false
     };
   }
 
@@ -52,9 +58,25 @@ export default class Insurance extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.newForm.id !== prevState.newForm.id) {
-      console.log(this.state.newForm);
-      let forms = this.state.newForms.unshift(this.state.newForm);
-      this.setState({ newForms: forms });
+      this.setState({ notification: true });
+    }
+  }
+
+  renderNotification() {
+    switch (this.state.notification) {
+      case true:
+        setTimeout(() => {
+          this.setState({ notification: false });
+        }, 3000);
+
+        return NotificationManager.success(
+          this.state.newForm.name,
+          this.state.newForm.requestAmount
+        );
+      case false:
+        return false;
+      default:
+        return false;
     }
   }
 
@@ -183,6 +205,7 @@ export default class Insurance extends Component {
         >
           {this.mapPatientCards()}
         </div>
+        <NotificationContainer />
       </div>
     );
   }

@@ -42,7 +42,7 @@ class HospitalSignIn extends Component {
       { key: "Date of Birth", value: "Nov. 3rd, 1997" }
     ];
     this.props.setPatientInformation(patientInformation);
-    let patient = await this.getPatientProfile("rooterbuster.id.blockstack");
+    let patient = await this.getPatientProfile("subraizahmed.id.blockstack");
   }
 
   getPatientProfile(patientID) {
