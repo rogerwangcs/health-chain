@@ -4,7 +4,8 @@
   "description": "Decentralized health bill platform",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "node server.js",
+    "dev":"webpack-dev-server",
     "build": "webpack -p",
     "ngrok": "./node_modules/.bin/ngrok http 8080 -host-header='localhost:8080'"
   },
