@@ -14,7 +14,7 @@ import {
 
 import Patient from "./Patient.jsx";
 import Hospital from "./Hospital.jsx";
-import Insurance from "./Insurance";
+import Insurance from "./Insurance.jsx";
 
 class App extends Component {
   constructor(props) {
